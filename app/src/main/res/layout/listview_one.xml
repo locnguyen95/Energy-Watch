@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="26dp">
+
+    <TextView
+        android:id="@+id/thoigian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp"
+        android:layout_weight="1"
+        android:hint="thoigian"
+        android:text=""
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/gio"
+        android:gravity="center"
+        android:layout_marginVertical="3dp"
+        android:textSize="15sp"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="gio"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+
+    <TextView
+        android:id="@+id/phut"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp"
+        android:layout_weight="1"
+        android:textSize="15sp"
+        android:hint="phut"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+
+    <TextView
+        android:id="@+id/giay"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginVertical="3dp"
+        android:textSize="15sp"
+        android:hint="giay"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+</LinearLayout>
