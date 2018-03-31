@@ -76,13 +76,29 @@ public class Main extends AppCompatActivity {
 
 
         //gui du lieu len
-        data.addValueEventListener(new ValueEventListener() {
+        data.child("test").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //gio.setText(data.);
-                //gio.setText(dataSnapshot.child("test").child("gio").getValue().toString());
-                //phut.setText(dataSnapshot.child("phut").getValue().toString());
-                //giay.setText(dataSnapshot.child("giay").getValue().toString());
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                test data1 = dataSnapshot.getValue(test.class);
+                gio.setText(data1.gio.toString());
+                phut.setText(data1.phut.toString());
+                giay.setText(data1.giay.toString());
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -94,10 +110,11 @@ public class Main extends AppCompatActivity {
 
 
 
+
         data_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Main.this, data.class));
+                startActivity(new Intent(Main.this, com.example.pc.energywatch.data.class));
             }
         });
 

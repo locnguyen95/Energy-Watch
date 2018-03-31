@@ -62,10 +62,11 @@ public class data_adapter extends BaseAdapter{
         }
         //gan gia tri
         holder._thoigian.setText(arraydata.get(i).date);
-        holder._gio.setText(arraydata.get(i).gio);
-        holder._phut.setText(arraydata.get(i).phut);
-        holder._giay.setText(arraydata.get(i).giay);
+        holder._gio.setText(arraydata.get(i).gio.toString());           //nho them toString()  vì kiểu gio là Integer
+        holder._phut.setText(arraydata.get(i).phut.toString());
+        holder._giay.setText(arraydata.get(i).giay.toString());
         return rowview;
+
     }
 
 }

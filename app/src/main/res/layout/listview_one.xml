@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="3dp"
         android:layout_weight="1"
-        android:hint="thoigian"
+        android:hint="Time"
         android:text=""
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="15dp" />
@@ -22,7 +22,7 @@
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="gio"
+        android:hint="Hour"
         android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_marginVertical="3dp"
         android:layout_weight="1"
         android:textSize="15sp"
-        android:hint="phut"
+        android:hint="Minute"
         android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
     <TextView
@@ -44,6 +44,6 @@
         android:layout_weight="1"
         android:layout_marginVertical="3dp"
         android:textSize="15sp"
-        android:hint="giay"
+        android:hint="Second"
         android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 </LinearLayout>
