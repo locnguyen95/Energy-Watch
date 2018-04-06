@@ -9,16 +9,27 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="3dp"
         android:layout_weight="1"
-        android:hint="Time"
+        android:hint="Date"
         android:text=""
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="20dp" />
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp"
+        android:layout_weight="1"
+        android:hint="time"
+        android:text=""
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/gio"
         android:gravity="center"
         android:layout_marginVertical="3dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="3dp"
         android:layout_weight="1"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:hint="Minute"
         android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
@@ -43,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginVertical="3dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:hint="Second"
         android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 </LinearLayout>

@@ -51,6 +51,7 @@ public class Main extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //i = dataSnapshot.child("test/numberdata").getValue().hashCode();
+                        //int i=0;
                         int i = (int) dataSnapshot.child("test").child("numberdata").getValue().hashCode();
                         Calendar c= Calendar.getInstance();
                         int year = c.get(Calendar.YEAR);
@@ -61,7 +62,7 @@ public class Main extends AppCompatActivity {
                         int second = c.get(Calendar.SECOND);
                         int millis = c.get(Calendar.MILLISECOND);
                         i++;
-                        test Test =new test(hour,minute,second, (day+"-"+(month+1)+"-"+year).toString());
+                        test Test =new test(hour,minute,second, (day+"-"+(month+1)+"-"+year).toString(), (hour+":"+minute+":"+second));
                         data.child("test/data/"+i).setValue(Test);
                         data.child("test").child("numberdata").setValue(i);
                     }

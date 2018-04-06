@@ -40,7 +40,7 @@ public class data_adapter extends BaseAdapter{
     }
 
     private class viewholder{
-        TextView _thoigian,_gio, _phut, _giay;
+        TextView _date,_gio, _phut, _giay, _time;
     }
 
     @Override
@@ -51,7 +51,8 @@ public class data_adapter extends BaseAdapter{
 
         if(rowview == null){
             rowview = inflater.inflate(myLayout, null);
-            holder._thoigian = (TextView) rowview.findViewById(R.id.thoigian);
+            holder._date = (TextView) rowview.findViewById(R.id.thoigian);
+            holder._time =(TextView) rowview.findViewById(R.id.time);
             holder._gio =(TextView) rowview.findViewById(R.id.gio);
             holder._phut =(TextView) rowview.findViewById(R.id.phut);
             holder._giay =(TextView) rowview.findViewById(R.id.giay);
@@ -60,7 +61,8 @@ public class data_adapter extends BaseAdapter{
             holder = (viewholder) rowview.getTag();
         }
         //gan gia tri
-        holder._thoigian.setText(arraydata.get(i).date);
+        holder._date.setText(arraydata.get(i).date);
+        holder._time.setText(arraydata.get(i).time);
         holder._gio.setText(arraydata.get(i).gio.toString());           //nho them toString()  vì kiểu gio là Integer
         holder._phut.setText(arraydata.get(i).phut.toString());
         holder._giay.setText(arraydata.get(i).giay.toString());
