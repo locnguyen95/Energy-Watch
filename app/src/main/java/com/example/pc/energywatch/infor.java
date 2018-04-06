@@ -37,7 +37,7 @@ public class infor extends AppCompatActivity {
         auth= FirebaseAuth.getInstance();
         user=FirebaseAuth.getInstance().getCurrentUser();
 
-        name.setText(user.getUid());
+        name.setText(user.getDisplayName());
         id.setText(user.getEmail());
 
         logout_btn.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +69,16 @@ public class infor extends AppCompatActivity {
         change_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                auth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(infor.this,"We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                        } else{
+                            Toast.makeText(infor.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
             }
         });

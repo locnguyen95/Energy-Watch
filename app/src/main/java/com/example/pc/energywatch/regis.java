@@ -44,6 +44,7 @@ public class regis extends AppCompatActivity {
     private  void registerUser(){
         String acc= r_mail.getText().toString().trim();
         String passcode= r_pass.getText().toString().trim();
+        String passcode1=r_pass1.getText().toString().trim();
 
         if(TextUtils.isEmpty(acc)){
             Toast.makeText(com.example.pc.energywatch.regis.this, "Please enter Email",Toast.LENGTH_SHORT).show();
@@ -54,26 +55,34 @@ public class regis extends AppCompatActivity {
             return;
         }
 
-        if (passcode.length() < 6) {
+        if (((passcode.length() < 6)&&(passcode.length()>0)) || ((passcode1.length()<6)&&(passcode1.length()>0)) ) {
             Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (TextUtils.isEmpty(passcode1) && TextUtils.isEmpty(passcode)==false) {
+            Toast.makeText(getApplicationContext(), "Please re-type your password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!passcode.equals(passcode1)){
+            Toast.makeText(regis.this,"Password is not correct, please enter password again!",Toast.LENGTH_SHORT ).show();
+        }else
         //progressBar.setVisibility(View.VISIBLE);
-        auth.createUserWithEmailAndPassword(acc, passcode)
-                .addOnCompleteListener(regis.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(regis.this, "Sign up successly, congratulation :)", Toast.LENGTH_SHORT).show();
-                            Intent regis_scr = new Intent(regis.this, login.class);
-                            startActivity(regis_scr);
-                        } else {
+        {
+            auth.createUserWithEmailAndPassword(acc, passcode)
+                    .addOnCompleteListener(regis.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(regis.this, "Sign up successly, congratulation :)", Toast.LENGTH_SHORT).show();
+                                Intent regis_scr = new Intent(regis.this, login.class);
+                                startActivity(regis_scr);
+                            } else {
 
-                            Toast.makeText(com.example.pc.energywatch.regis.this, "Opps! Sign up fail, please try again :(", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(com.example.pc.energywatch.regis.this, "Opps! Sign up fail, please try again :(", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
-
+                    });
+        }
 
     }
     private void anhxa1(){

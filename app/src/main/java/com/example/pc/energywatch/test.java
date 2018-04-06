@@ -10,6 +10,7 @@ public class test {
     public Integer giay;
     public String date;
 
+
     public test() {
     }
 
@@ -19,4 +20,6 @@ public class test {
         this.giay = giay;
         this.date = date;
     }
+
+
 }
