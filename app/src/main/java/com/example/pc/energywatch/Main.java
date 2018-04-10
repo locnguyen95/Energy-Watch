@@ -21,7 +21,7 @@ import java.util.Calendar;
 public class Main extends AppCompatActivity {
 
     private Button acc_btn, data_btn,test_btn;
-    private TextView gio, phut, giay;
+    private TextView gio_, phut_, giay_;
     DatabaseReference data;
     int i;
     @Override
@@ -33,9 +33,9 @@ public class Main extends AppCompatActivity {
         data_btn = (Button) findViewById(R.id.data);
         test_btn = (Button) findViewById(R.id.test);
 
-        gio =(TextView) findViewById(R.id.hour);
-        phut= (TextView) findViewById(R.id.minute);
-        giay= (TextView) findViewById(R.id.second);
+        gio_ =(TextView) findViewById(R.id.hour);
+        phut_= (TextView) findViewById(R.id.minute);
+        giay_= (TextView) findViewById(R.id.second);
 
         data=FirebaseDatabase.getInstance().getReference();                 //realtime database
 
@@ -52,7 +52,7 @@ public class Main extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //i = dataSnapshot.child("test/numberdata").getValue().hashCode();
                         //int i=0;
-                        int i = (int) dataSnapshot.child("test").child("numberdata").getValue().hashCode();
+                        int i = (int) dataSnapshot.child("numberdata").getValue().hashCode();
                         Calendar c= Calendar.getInstance();
                         int year = c.get(Calendar.YEAR);
                         int month = c.get(Calendar.MONTH);
@@ -60,11 +60,11 @@ public class Main extends AppCompatActivity {
                         int hour = c.get(Calendar.HOUR_OF_DAY);
                         int minute = c.get(Calendar.MINUTE);
                         int second = c.get(Calendar.SECOND);
-                        int millis = c.get(Calendar.MILLISECOND);
+                        //int millis = c.get(Calendar.MILLISECOND);
                         i++;
                         test Test =new test(hour,minute,second, (day+"-"+(month+1)+"-"+year).toString(), (hour+":"+minute+":"+second));
-                        data.child("test/data/"+i).setValue(Test);
-                        data.child("test").child("numberdata").setValue(i);
+                        data.child("Data/"+i).setValue(Test);
+                        data.child("numberdata").setValue(i);
                     }
 
                     @Override
@@ -84,13 +84,13 @@ public class Main extends AppCompatActivity {
 
 
         //gui du lieu len
-        data.child("test/data").addChildEventListener(new ChildEventListener() {
+        data.child("Data").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 test data1 = dataSnapshot.getValue(test.class);
-                gio.setText(data1.gio.toString());
-                phut.setText(data1.phut.toString());
-                giay.setText(data1.giay.toString());
+                gio_.setText(data1.Hour.toString());
+                phut_.setText(data1.Minute.toString());
+                giay_.setText(data1.Second.toString());
 
             }
 

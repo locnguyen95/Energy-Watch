@@ -5,22 +5,22 @@ package com.example.pc.energywatch;
  */
 
 public class test {
-    public Integer gio;
-    public Integer phut;
-    public Integer giay;
-    public String date;
+    public Integer Hour;
+    public Integer Minute;
+    public Integer Second;
+    public String Date;
     /////////////
-    public String time;
+    public String Time;
 
     public test() {
     }
 
-    public test(Integer gio, Integer phut, Integer giay, String date, String time) {
-        this.gio = gio;
-        this.phut = phut;
-        this.giay = giay;
-        this.date = date;
-        this.time = time;
+    public test(Integer Hour, Integer Minute, Integer Second, String Date, String Time) {
+        this.Hour = Hour;
+        this.Minute = Minute;
+        this.Second = Second;
+        this.Date = Date;
+        this.Time = Time;
     }
 
 

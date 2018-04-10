@@ -61,11 +61,11 @@ public class data_adapter extends BaseAdapter{
             holder = (viewholder) rowview.getTag();
         }
         //gan gia tri
-        holder._date.setText(arraydata.get(i).date);
-        holder._time.setText(arraydata.get(i).time);
-        holder._gio.setText(arraydata.get(i).gio.toString());           //nho them toString()  vì kiểu gio là Integer
-        holder._phut.setText(arraydata.get(i).phut.toString());
-        holder._giay.setText(arraydata.get(i).giay.toString());
+        holder._date.setText(arraydata.get(i).Date);
+        holder._time.setText(arraydata.get(i).Time);
+        holder._gio.setText(arraydata.get(i).Hour.toString());           //nho them toString()  vì kiểu gio là Integer
+        holder._phut.setText(arraydata.get(i).Minute.toString());
+        holder._giay.setText(arraydata.get(i).Second.toString());
         return rowview;
 
     }

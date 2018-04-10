@@ -59,7 +59,7 @@ public class data extends AppCompatActivity {
         search =(Button) findViewById(R.id.search);
         adapter = new data_adapter(this, R.layout.listview_one,mangdata);
         lvdata.setAdapter(adapter);
-        //load_data();
+        load_data();
 
         from.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,11 +127,11 @@ public class data extends AppCompatActivity {
                 database.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        int sodem = (int) dataSnapshot.child("test").child("numberdata").getValue().hashCode();
+                        int sodem = (int) dataSnapshot.child("numberdata").getValue().hashCode();
                         int i;
                         int dem=0;
                         for ( i = 1; i <= sodem; i++) {
-                            String temp_date = (String) dataSnapshot.child("test/data/" + i).child("date").getValue();
+                            String temp_date = (String) dataSnapshot.child("Data/" + i).child("Date").getValue();
                             String[] x = temp_date.split("-");
                             Integer day1 = Integer.parseInt(x[0]);
                             Integer month1 = Integer.parseInt(x[1]);
@@ -139,7 +139,7 @@ public class data extends AppCompatActivity {
                             c3.set(year1,(month1-1),day1);
 
                             // tach gio cua mang data
-                            String temp_time = (String) dataSnapshot.child("test/data/" + i).child("time").getValue();
+                            String temp_time = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
                             String[] y = temp_time.split(":");
                             Integer h = Integer.parseInt(y[0]);
                             Integer m = Integer.parseInt(y[1]);
@@ -151,7 +151,7 @@ public class data extends AppCompatActivity {
                                     && ((c3.getTimeInMillis()+h*3600*1000+m*60*1000-c2.getTimeInMillis()-gio2*3600*1000-phut2*60*1000)/(1000*60)<=0))
                             {
                                 //in ra dư lieu da loc
-                                mangdata.add(new test( dataSnapshot.child("test/data/" + i).child("gio").getValue().hashCode(),dataSnapshot.child("test/data/" + i).child("phut").getValue().hashCode(), dataSnapshot.child("test/data/" + i).child("giay").getValue().hashCode(),dataSnapshot.child("test/data/" + i).child("date").getValue().toString(),dataSnapshot.child("test/data/" + i).child("time").getValue().toString()));
+                                mangdata.add(new test( dataSnapshot.child("Data/" + i).child("Hour").getValue().hashCode(),dataSnapshot.child("Data/" + i).child("Minute").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Second").getValue().hashCode(),dataSnapshot.child("Data/" + i).child("Date").getValue().toString(),dataSnapshot.child("Data/" + i).child("Time").getValue().toString()));
                                 adapter.notifyDataSetChanged();
                                 dem++;
                             }
@@ -212,11 +212,11 @@ public class data extends AppCompatActivity {
 
 
     private void load_data(){
-        database.child("test").addChildEventListener(new ChildEventListener() {
+        database.child("Data").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 test data1 = dataSnapshot.getValue(test.class);
-                mangdata.add(new test(data1.gio, data1.phut, data1.giay, data1.date, data1.time));
+                mangdata.add(new test(data1.Hour, data1.Minute, data1.Second, data1.Date, data1.Time));
                 adapter.notifyDataSetChanged();
             }
 
