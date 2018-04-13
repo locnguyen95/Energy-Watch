@@ -82,7 +82,7 @@ public class Main extends AppCompatActivity {
 
         //gui xuong
 
-
+/*
         //gui du lieu len
         data.child("Data").addChildEventListener(new ChildEventListener() {
             @Override
@@ -114,7 +114,7 @@ public class Main extends AppCompatActivity {
 
             }
         });
-
+*/
 
 
 

@@ -16,33 +16,32 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_margin="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/from"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="From"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="20dp"
-                                android:textStyle="bold" />
+                        <Button
+                            android:id="@+id/from"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="From"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
 
-                            <Button
-                                android:id="@+id/to"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="To"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="20dp"
-                                android:textStyle="bold" />
+                        <Button
+                            android:id="@+id/to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="To"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
 
                         <Button
@@ -54,6 +53,15 @@
                             android:text="SEARCH"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="20dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="15dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
