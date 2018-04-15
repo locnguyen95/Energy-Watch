@@ -41,7 +41,7 @@ public class data extends AppCompatActivity {
         ArrayList<test> mangdata =new ArrayList();
         DatabaseReference database;
         data_adapter adapter= null ;
-        TextView H1, H2, ngay1, ngay2,temp;
+        TextView H1, H2, ngay1, ngay2,error,error_text;
         Button from, to, search;
         DatePickerDialog.OnDateSetListener myfromdate;
         Calendar c1= Calendar.getInstance();
@@ -69,7 +69,8 @@ public class data extends AppCompatActivity {
         H2 = (TextView) findViewById(R.id.gio2);
         ngay1 = (TextView) findViewById(R.id.ngay1);
         ngay2 = (TextView) findViewById(R.id.ngay2);
-        temp= (TextView) findViewById(R.id.temp);
+        error= (TextView) findViewById(R.id.temp);
+        error_text= (TextView) findViewById(R.id.error);
         search =(Button) findViewById(R.id.search);
         adapter = new data_adapter(this, R.layout.listview_one,mangdata);
         lvdata.setAdapter(adapter);
@@ -124,8 +125,6 @@ public class data extends AppCompatActivity {
 
                 mangdata.clear();
                 flag1=0; flag2=0;
-                temp.setText("" + (gio2*60+phut2-gio1*60-phut1));
-
 
                 database.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -159,8 +158,8 @@ public class data extends AppCompatActivity {
                         c3.set(year2_, (month2_ - 1), day2_);
                         long check2 = c2.getTimeInMillis() / 6000 + gio2 * 60 + phut2 - c3.getTimeInMillis() / 6000 - h2_ * 60 - m2_;
 
-                        if(check1<0) {flag1=1; from_so=1;}
-                        if(check2>0) {flag2=1; to_so=bottom1+1;}
+                        if(check1<=0) {flag1=1; from_so=0;}
+                        if(check2>=0) {flag2=1; to_so=bottom1+1;}
 
                         //ham de quy
                         for(mid= (bottom1+top1-1)/2; flag1==0; mid= (bottom+top-1)/2){
@@ -232,12 +231,12 @@ public class data extends AppCompatActivity {
                             long a = c2.getTimeInMillis() / 6000 + gio2 * 60 + phut2 - c3.getTimeInMillis() / 6000 - h * 60 - m;
                             if (a < 0) {
                                 if(bottom-top<3)
-                                { to_so=top; flag2=1; }
+                                { to_so=top; flag2=1; }else
                                 bottom = mid;
                             }
                             if (a > 0) {
                                 if(bottom-top<3)
-                                { to_so= mid; flag2=1;}
+                                {to_so= mid+1; flag2=1;}else
                                 top = mid + 1;
                             }
                             if (a == 0) {
@@ -262,15 +261,17 @@ public class data extends AppCompatActivity {
                                 break;
                         }
                         }
-
+                        int dem = 0;
+                        int error_number=0;
                         if(flag1==1 && flag2==1){
                         int i;
-                        int dem = 0;
 
-                        for (i = from_so + 1; i < to_so; i++) {
+
+
+                        for (i = from_so+1 ; i < to_so; i++) {
                             test data1= dataSnapshot.child("Data/"+i).getValue(test.class);
                             if(data1==null || data1.Hour==null || data1.Minute==null|| data1.Second==null|| data1.Date==null|| data1.Time==null)
-                            {mangdata.add(new test(0, 0, 0, "null", "null"));}
+                            {mangdata.add(new test(0, 0, 0, "null", "null")); error_number++;}
                             else{
                                 //mangdata.add(new test(data1.Hour, data1.Minute, data1.Second, data1.Date, data1.Time));
                                 mangdata.add(new test(dataSnapshot.child("Data/" + i).child("Hour").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Minute").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Second").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Date").getValue().toString(), dataSnapshot.child("Data/" + i).child("Time").getValue().toString()));
@@ -279,9 +280,17 @@ public class data extends AppCompatActivity {
                             adapter.notifyDataSetChanged();
                             dem++;}
                         }
+                        if(dem==0){
+                            mangdata.clear();
+                            adapter.notifyDataSetChanged();     //can co dong nay de nhan biet du lieu co thay doi hay khong va cap nhat len listview
+                            Toast.makeText(data.this, "There is no data at this time!", Toast.LENGTH_SHORT).show();
+                        }
 
-                        database.removeEventListener(this);
-
+                        if(dem!=0 ){
+                        error.setText(""+error_number);
+                        error_text.setText("Errors");
+                        }
+                        //database.removeEventListener(this);
                     }
 
                     @Override

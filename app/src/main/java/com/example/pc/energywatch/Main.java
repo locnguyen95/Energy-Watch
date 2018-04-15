@@ -43,7 +43,7 @@ public class Main extends AppCompatActivity {
         //data.child("phut").setValue(0);
         //data.child("giay").setValue(0);
 
-
+/*
         test_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +62,7 @@ public class Main extends AppCompatActivity {
                         int second = c.get(Calendar.SECOND);
                         //int millis = c.get(Calendar.MILLISECOND);
                         i++;
-                        test Test =new test(hour,minute,second, (day+"-"+(month+1)+"-"+year).toString(), (hour+":"+minute+":"+second));
+                        test Test =new test(hour,minute,second, (day+"-"+(month+1)+"-"+year).toString(), (hour+":"+minute+":"+second).toString());
                         data.child("Data/"+i).setValue(Test);
                         data.child("numberdata").setValue(i);
                     }
@@ -78,9 +78,24 @@ public class Main extends AppCompatActivity {
 
             }
         });
+*/
 
+        data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int data_num= dataSnapshot.child("numberdata").getValue().hashCode();
+                test data1 = dataSnapshot.child("Data/"+data_num).getValue(test.class);
+                gio_.setText(data1.Hour.toString());
+                phut_.setText(data1.Minute.toString());
+                giay_.setText(data1.Second.toString());
 
-        //gui xuong
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 /*
         //gui du lieu len

@@ -37,8 +37,9 @@ public class infor extends AppCompatActivity {
         auth= FirebaseAuth.getInstance();
         user=FirebaseAuth.getInstance().getCurrentUser();
 
-        name.setText(user.getDisplayName());
-        id.setText(user.getEmail());
+        //name.setText(user.getDisplayName());
+        String [] name_= user.getEmail().split("@");
+        id.setText(name_[0]);
 
         logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
