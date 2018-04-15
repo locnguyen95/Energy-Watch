@@ -1,5 +1,6 @@
 package com.example.pc.energywatch;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,11 +62,18 @@ public class data_adapter extends BaseAdapter{
             holder = (viewholder) rowview.getTag();
         }
         //gan gia tri
+
         holder._date.setText(arraydata.get(i).Date);
         holder._time.setText(arraydata.get(i).Time);
         holder._gio.setText(arraydata.get(i).Hour.toString());           //nho them toString()  vì kiểu gio là Integer
         holder._phut.setText(arraydata.get(i).Minute.toString());
         holder._giay.setText(arraydata.get(i).Second.toString());
+
+        if(arraydata.get(i).Date=="null"){
+            rowview.setBackgroundColor(Color.parseColor("#FFF86855" ));
+        }else{
+            rowview.setBackgroundColor(Color.parseColor("#FFC9F6FA" ));
+        }
         return rowview;
 
     }

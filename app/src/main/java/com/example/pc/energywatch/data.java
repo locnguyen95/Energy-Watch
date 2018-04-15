@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,11 +23,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+import org.w3c.dom.NameList;
+
 import java.text.BreakIterator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 import java.util.SimpleTimeZone;
 import java.util.zip.DataFormatException;
 
@@ -34,7 +41,7 @@ public class data extends AppCompatActivity {
         ArrayList<test> mangdata =new ArrayList();
         DatabaseReference database;
         data_adapter adapter= null ;
-        TextView gio1, gio2, ngay1, ngay2,temp;
+        TextView H1, H2, ngay1, ngay2,temp;
         Button from, to, search;
         DatePickerDialog.OnDateSetListener myfromdate;
         Calendar c1= Calendar.getInstance();
@@ -43,9 +50,11 @@ public class data extends AppCompatActivity {
         Calendar t1= Calendar.getInstance();
         Calendar t2= Calendar.getInstance();
         //int hour1, hour2, min1, min2;
-    int i,from_so, to_so, flag=0;
-    static int top, bottom, mid,tam;
+    int i,from_so, to_so, flag1=0, flag2=0, flag=0;
+    static int top, bottom, mid,tam,top1, mid1, bottom1, tam1;
+    int gio1, phut1, gio2, phut2;
 
+    List<test> tests = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +65,8 @@ public class data extends AppCompatActivity {
         from =(Button) findViewById(R.id.from);
         to = (Button) findViewById(R.id.to);
        // so_ngay= (TextView) findViewById(R.id.songay);
-        gio1 = (TextView) findViewById(R.id.gio1);
-        gio2 = (TextView) findViewById(R.id.gio2);
+        H1 = (TextView) findViewById(R.id.gio1);
+        H2 = (TextView) findViewById(R.id.gio2);
         ngay1 = (TextView) findViewById(R.id.ngay1);
         ngay2 = (TextView) findViewById(R.id.ngay2);
         temp= (TextView) findViewById(R.id.temp);
@@ -69,7 +78,7 @@ public class data extends AppCompatActivity {
         from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chongio(gio1,t1);
+                chongio(H1,t1);
                 chonngay(ngay1,c1 );
 
 
@@ -79,7 +88,7 @@ public class data extends AppCompatActivity {
         to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chongio(gio2,t2);
+                chongio(H2,t2);
                 chonngay(ngay2,c2);
                 //c2.set(2018,4,10);
                 //SimpleDateFormat format =new SimpleDateFormat("dd/MM/yyyy");
@@ -92,20 +101,20 @@ public class data extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(gio1.getText().toString().equals("") || gio2.getText().toString().equals("")|| ngay1.getText().toString().equals("") || ngay2.getText().toString().equals("")){
+                if(H1.getText().toString().equals("") || H2.getText().toString().equals("")|| ngay1.getText().toString().equals("") || ngay2.getText().toString().equals("")){
                     Toast.makeText(data.this, "Please insert From and To information", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // tach gio cua from
-                String[] time1 = (gio1.getText().toString()).split(":");
-                final Integer gio1 = Integer.parseInt(time1[0]);
-                final Integer phut1 = Integer.parseInt(time1[1]);
+                String[] time1 = (H1.getText().toString()).split(":");
+                gio1 = Integer.parseInt(time1[0]);
+                phut1 = Integer.parseInt(time1[1]);
 
                 // tach gio cua to
-                String[] time2 = (gio2.getText().toString()).split(":");
-                final Integer gio2 = Integer.parseInt(time2[0]);
-                final Integer phut2 = Integer.parseInt(time2[1]);
+                String[] time2 = (H2.getText().toString()).split(":");
+                gio2 = Integer.parseInt(time2[0]);
+                phut2 = Integer.parseInt(time2[1]);
 
                 // thong bao loi thoi gian
                 if((c2.getTimeInMillis()+gio2*60*60*1000+phut2*60*1000-c1.getTimeInMillis()-gio1*3600*1000-phut1*60*1000)/(1000*60) <0){
@@ -114,240 +123,174 @@ public class data extends AppCompatActivity {
                 }
 
                 mangdata.clear();
+                flag1=0; flag2=0;
                 temp.setText("" + (gio2*60+phut2-gio1*60-phut1));
+
 
                 database.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        tam= bottom = (int) dataSnapshot.child("numberdata").getValue().hashCode();
+                        tam= bottom=bottom1 = (int) dataSnapshot.child("numberdata").getValue().hashCode();
+                        top=top1=1;
 
-                    }
+                        //check dau
+                        String time1 = (String) dataSnapshot.child("Data/" + 1).child("Time").getValue();
+                        String[] t1 = time1.split(":");
+                        Integer h1_ = Integer.parseInt(t1[0]);
+                        Integer m1_ = Integer.parseInt(t1[1]);
+                        String day = (String) dataSnapshot.child("Data/" + 1).child("Date").getValue();
+                        String[] d1 = day.split("-");
+                        Integer day1_ = Integer.parseInt(d1[0]);
+                        Integer month1_ = Integer.parseInt(d1[1]);
+                        Integer year1_ = Integer.parseInt(d1[2]);
+                        c3.set(year1_, (month1_ - 1), day1_);
+                        long check1 = c1.getTimeInMillis() / 6000 + gio1 * 60 + phut1 - c3.getTimeInMillis() / 6000 - h1_ * 60 - m1_;
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        //check cuoi
+                        String time2 = (String) dataSnapshot.child("Data/" + bottom1).child("Time").getValue();
+                        String[] t2 = time2.split(":");
+                        Integer h2_ = Integer.parseInt(t2[0]);
+                        Integer m2_ = Integer.parseInt(t2[1]);
+                        String day2 = (String) dataSnapshot.child("Data/" + bottom1).child("Date").getValue();
+                        String[] d2 = day2.split("-");
+                        Integer day2_ = Integer.parseInt(d2[0]);
+                        Integer month2_ = Integer.parseInt(d2[1]);
+                        Integer year2_ = Integer.parseInt(d2[2]);
+                        c3.set(year2_, (month2_ - 1), day2_);
+                        long check2 = c2.getTimeInMillis() / 6000 + gio2 * 60 + phut2 - c3.getTimeInMillis() / 6000 - h2_ * 60 - m2_;
 
-                    }
-                });
+                        if(check1<0) {flag1=1; from_so=1;}
+                        if(check2>0) {flag2=1; to_so=bottom1+1;}
 
+                        //ham de quy
+                        for(mid= (bottom1+top1-1)/2; flag1==0; mid= (bottom+top-1)/2){
+                            String temp_time = (String) dataSnapshot.child("Data/" + mid).child("Time").getValue();
+                            if(temp_time==null){
+                                top++;
+                            }
+                            else {
+                                String[] y = temp_time.split(":");
+                                Integer h = Integer.parseInt(y[0]);
+                                Integer m = Integer.parseInt(y[1]);
+                                String temp_date = (String) dataSnapshot.child("Data/" + mid).child("Date").getValue();
+                                String[] x = temp_date.split("-");
+                                Integer day1 = Integer.parseInt(x[0]);
+                                Integer month1 = Integer.parseInt(x[1]);
+                                Integer year1 = Integer.parseInt(x[2]);
+                                c3.set(year1, (month1 - 1), day1);
 
-                top=1;
-                MergeSort(c1,gio1, phut1, 1);
-                MergeSort(c2,gio2, phut2, 0);
-
-
-                if(from_so !=0 &&to_so!=0) {
-                    database.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            int i;
-                            int dem = 0;
-                            for (i = from_so + 1; i < to_so; i++) {
-                                mangdata.add(new test(dataSnapshot.child("Data/" + i).child("Hour").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Minute").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Second").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Date").getValue().toString(), dataSnapshot.child("Data/" + i).child("Time").getValue().toString()));
-                                adapter.notifyDataSetChanged();
-                                dem++;
+                                long a = c1.getTimeInMillis() / 6000 + gio1 * 60 + phut1 - c3.getTimeInMillis() / 6000 - h * 60 - m;
+                                if (a < 0) {
+                                    if(bottom-top<3)
+                                    { from_so=mid; flag1=1;}
+                                    bottom = mid;
+                                }
+                                if (a > 0) {
+                                    if(bottom-top<3)
+                                    { from_so=bottom; flag2=1;}
+                                    top = mid + 1;
+                                }
+                                if (a == 0) {
+                                    int i;
+                                    for (i = mid; i > 0; i--) {
+                                        String temp_ = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
+                                        if(temp_==null){
+                                        }else{
+                                        String[] z = temp_.split(":");
+                                        Integer m_temp = Integer.parseInt(z[1]);
+                                        if (m_temp != m) {
+                                            from_so = i;
+                                            bottom = bottom1;
+                                            top = from_so;
+                                            //database.removeEventListener(this);
+                                            flag1 = 1;
+                                            break;
+                                        }
+                                    }}
+                                }
+                                if (flag1 == 1)
+                                    break;
                             }
                         }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
-                }
-/*
-                database.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        int sodem = (int) dataSnapshot.child("numberdata").getValue().hashCode();
-
-
-
-
-
-                        ////////////
-                        int i;
-                        int dem = 0;
-                        for (i = 1; i <= sodem; i++) {
-                            String temp_date = (String) dataSnapshot.child("Data/" + i).child("Date").getValue();
+                        for(mid= (bottom1+top1-1)/2; flag1==1 && flag2==0 ; mid= (bottom+top-1)/2) {
+                            String temp_time = (String) dataSnapshot.child("Data/" + mid).child("Time").getValue();
+                            if (temp_time == null) {
+                                top++;
+                            } else{
+                                String[] y = temp_time.split(":");
+                            Integer h = Integer.parseInt(y[0]);
+                            Integer m = Integer.parseInt(y[1]);
+                            String temp_date = (String) dataSnapshot.child("Data/" + mid).child("Date").getValue();
                             String[] x = temp_date.split("-");
                             Integer day1 = Integer.parseInt(x[0]);
                             Integer month1 = Integer.parseInt(x[1]);
                             Integer year1 = Integer.parseInt(x[2]);
                             c3.set(year1, (month1 - 1), day1);
 
-                            // tach gio cua mang data
-                            String temp_time = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
-                            String[] y = temp_time.split(":");
-                            Integer h = Integer.parseInt(y[0]);
-                            Integer m = Integer.parseInt(y[1]);
-                            //Integer s = Integer.parseInt(x[2]);
-
-
-                            if (((c3.getTimeInMillis() + h * 60 * 60 * 1000 + m * 60 * 1000 - c1.getTimeInMillis() - gio1 * 3600 * 1000 - phut1 * 60 * 1000) / (1000 * 60) >= 0)
-                                    && ((c3.getTimeInMillis() + h * 3600 * 1000 + m * 60 * 1000 - c2.getTimeInMillis() - gio2 * 3600 * 1000 - phut2 * 60 * 1000) / (1000 * 60) <= 0))
-
-                            {
-                                //in ra dư lieu da loc
-                                mangdata.add(new test(dataSnapshot.child("Data/" + i).child("Hour").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Minute").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Second").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Date").getValue().toString(), dataSnapshot.child("Data/" + i).child("Time").getValue().toString()));
-                                adapter.notifyDataSetChanged();
-                                dem++;
+                            long a = c2.getTimeInMillis() / 6000 + gio2 * 60 + phut2 - c3.getTimeInMillis() / 6000 - h * 60 - m;
+                            if (a < 0) {
+                                if(bottom-top<3)
+                                { to_so=top; flag2=1; }
+                                bottom = mid;
                             }
+                            if (a > 0) {
+                                if(bottom-top<3)
+                                { to_so= mid; flag2=1;}
+                                top = mid + 1;
+                            }
+                            if (a == 0) {
+                                int i;
+                                for (i = mid; i > 0; i++) {
+                                    String temp_ = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
+                                    if(temp_==null){
+                                    }else{
+                                    String[] z = temp_.split(":");
+                                    Integer m_temp = Integer.parseInt(z[1]);
+                                    if (m_temp != m) {
+                                        to_so = i;
+                                        bottom = tam;
+                                        top = 1;
+                                        database.removeEventListener(this);
+                                        flag2 = 1;
+                                        break;
+                                    }
+                                }}
+                            }
+                            if (flag2 == 1)
+                                break;
+                        }
+                        }
 
+                        if(flag1==1 && flag2==1){
+                        int i;
+                        int dem = 0;
+
+                        for (i = from_so + 1; i < to_so; i++) {
+                            test data1= dataSnapshot.child("Data/"+i).getValue(test.class);
+                            if(data1==null || data1.Hour==null || data1.Minute==null|| data1.Second==null|| data1.Date==null|| data1.Time==null)
+                            {mangdata.add(new test(0, 0, 0, "null", "null"));}
+                            else{
+                                //mangdata.add(new test(data1.Hour, data1.Minute, data1.Second, data1.Date, data1.Time));
+                                mangdata.add(new test(dataSnapshot.child("Data/" + i).child("Hour").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Minute").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Second").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Date").getValue().toString(), dataSnapshot.child("Data/" + i).child("Time").getValue().toString()));
+                            }
+                            //mangdata.add(new test(dataSnapshot.child("Data/" + i).child("Hour").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Minute").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Second").getValue().hashCode(), dataSnapshot.child("Data/" + i).child("Date").getValue().toString(), dataSnapshot.child("Data/" + i).child("Time").getValue().toString()));
+                            adapter.notifyDataSetChanged();
+                            dem++;}
                         }
-                        if (dem == 0) {
-                            mangdata.clear();
-                            adapter.notifyDataSetChanged();     //can co dong nay de nhan biet du lieu co thay doi hay khong va cap nhat len listview
-                            Toast.makeText(data.this, "There is no data at this time!", Toast.LENGTH_SHORT).show();
-                        }
+
+                        database.removeEventListener(this);
+
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
-                */
             }
         });
 
-    }
-
-
-    private void MergeSort(final Calendar c, final int gio, final int phut, final int huong)
-    {
-
-        database.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                mid = ( bottom+top-1) / 2;
-                String temp_time = (String) dataSnapshot.child("Data/" + mid).child("Time").getValue();
-                String[] y = temp_time.split(":");
-                Integer h = Integer.parseInt(y[0]);
-                Integer m = Integer.parseInt(y[1]);
-                String temp_date = (String) dataSnapshot.child("Data/" + mid).child("Date").getValue();
-                String[] x = temp_date.split("-");
-                Integer day1 = Integer.parseInt(x[0]);
-                Integer month1 = Integer.parseInt(x[1]);
-                Integer year1 = Integer.parseInt(x[2]);
-                c3.set(year1, (month1 - 1), day1);
-
-                long a= c.getTimeInMillis()/6000+gio*60+ phut- c3.getTimeInMillis()/6000-h*60-m;
-                if (a <0){
-                    bottom=mid;
-                    MergeSort(c, gio,phut, huong);
-                }if(a>0){
-                    top= mid+1;
-                    MergeSort_after(c, gio, phut, huong);
-                }if (a ==0){
-                    if(huong==1){   //from
-                        for( i=mid; i>0;i--){
-                            String temp_ = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
-                            String[] z = temp_.split(":");
-                            Integer m_temp = Integer.parseInt(z[1]);
-                            if(m_temp!=m)
-                            {from_so=i;
-                            bottom=tam;
-                            top=1;
-                            //database.removeEventListener(this);
-                            flag=1; break ;}
-                        }
-                    }
-                    if(huong==0){
-                        for( i=mid; i>0;i++){
-                            String temp_ = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
-                            String[] z = temp_.split(":");
-                            Integer m_temp = Integer.parseInt(z[1]);
-                            if(m_temp!=m)
-                            {to_so=i;
-                                bottom=tam;
-                                top=1;
-                            //database.removeEventListener(this);
-                            flag=0; break ;}
-                        }
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-    private void MergeSort_after(final Calendar c, final int gio, final int phut, final int huong)
-    {
-
-        database.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mid = (bottom + top - 1) / 2;
-                String temp_time = (String) dataSnapshot.child("Data/" + mid).child("Time").getValue();
-                String[] y = temp_time.split(":");
-                Integer h = Integer.parseInt(y[0]);
-                Integer m = Integer.parseInt(y[1]);
-
-                String temp_date = (String) dataSnapshot.child("Data/" + mid).child("Date").getValue();
-                String[] x = temp_date.split("-");
-                Integer day1 = Integer.parseInt(x[0]);
-                Integer month1 = Integer.parseInt(x[1]);
-                Integer year1 = Integer.parseInt(x[2]);
-                c3.set(year1, (month1 - 1), day1);
-
-                long a = c.getTimeInMillis() / 6000 + gio * 60 + phut - c3.getTimeInMillis() / 6000 - h * 60 - m;
-                if (a < 0) {
-                    bottom = mid;
-                    MergeSort_after(c, gio, phut, huong);
-                }
-                if (a > 0) {
-                    top = mid + 1;
-                    MergeSort_after(c, gio, phut, huong);
-                }
-                if (a == 0) {
-                    switch (huong) {   //from
-                        case 1: {
-                            for (i = mid; i > 0; i--) {
-                                String temp_ = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
-                                String[] z = temp_.split(":");
-                                Integer m_temp = Integer.parseInt(z[1]);
-                                if (m_temp != m) {
-                                    from_so = i;
-                                    bottom=tam;
-                                    top=1;
-                                    //database.removeEventListener(this);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case 0: {
-                            for (i = mid; i > 0; i++) {
-                                String temp_ = (String) dataSnapshot.child("Data/" + i).child("Time").getValue();
-                                String[] z = temp_.split(":");
-                                Integer m_temp = Integer.parseInt(z[1]);
-                                if (m_temp != m) {
-                                    to_so = i;
-                                    bottom=tam;
-                                    top=1;
-                                    //database.removeEventListener(this);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 
@@ -393,7 +336,10 @@ public class data extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 test data1 = dataSnapshot.getValue(test.class);
-                mangdata.add(new test(data1.Hour, data1.Minute, data1.Second, data1.Date, data1.Time));
+                if(data1.Hour==null || data1.Minute==null|| data1.Second==null|| data1.Date==null|| data1.Time==null) {
+                    mangdata.add(new test(0, 0, 0, "null", "null"));
+                }else{
+                mangdata.add(new test(data1.Hour, data1.Minute, data1.Second, data1.Date, data1.Time));}
                 adapter.notifyDataSetChanged();
             }
 
