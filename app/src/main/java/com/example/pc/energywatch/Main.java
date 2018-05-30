@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
@@ -80,6 +81,10 @@ public class Main extends AppCompatActivity {
         });
 */
 
+
+
+
+//// nhận dữ liệu phiên bản v1
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -96,6 +101,9 @@ public class Main extends AppCompatActivity {
 
             }
         });
+
+
+
 
 /*
         //gui du lieu len

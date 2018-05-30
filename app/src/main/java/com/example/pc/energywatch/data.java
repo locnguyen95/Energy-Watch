@@ -145,6 +145,12 @@ public class data extends AppCompatActivity {
                         c3.set(year1_, (month1_ - 1), day1_);
                         long check1 = c1.getTimeInMillis() / 6000 + gio1 * 60 + phut1 - c3.getTimeInMillis() / 6000 - h1_ * 60 - m1_;
 
+
+                        if((c2.getTimeInMillis() / 6000 + gio2 * 60 + phut2 - c3.getTimeInMillis() / 6000 - h1_ * 60 - m1_)<0){
+                            flag1=1; flag2=1; from_so=to_so=top1;
+                        }       //thêm vô sau 30-5
+
+
                         //check cuoi
                         String time2 = (String) dataSnapshot.child("Data/" + bottom1).child("Time").getValue();
                         String[] t2 = time2.split(":");
@@ -160,6 +166,15 @@ public class data extends AppCompatActivity {
 
                         if(check1<=0) {flag1=1; from_so=0;}
                         if(check2>=0) {flag2=1; to_so=bottom1+1;}
+
+
+                        if((c1.getTimeInMillis() / 6000 + gio1 * 60 + phut1 - c3.getTimeInMillis() / 6000 - h2_ * 60 - m2_)>0){
+                            flag1=1; flag2=1; from_so=to_so=bottom1;
+                        }           //thêm vô sau 30-5
+
+
+
+
 
                         //ham de quy
                         for(mid= (bottom1+top1-1)/2; flag1==0; mid= (bottom+top-1)/2){
@@ -181,12 +196,12 @@ public class data extends AppCompatActivity {
                                 long a = c1.getTimeInMillis() / 6000 + gio1 * 60 + phut1 - c3.getTimeInMillis() / 6000 - h * 60 - m;
                                 if (a < 0) {
                                     if(bottom-top<3)
-                                    { from_so=mid; flag1=1;}
+                                    { from_so=mid-1; flag1=1;}else
                                     bottom = mid;
                                 }
                                 if (a > 0) {
                                     if(bottom-top<3)
-                                    { from_so=bottom; flag2=1;}
+                                    { from_so=bottom-1; flag1=1;}else
                                     top = mid + 1;
                                 }
                                 if (a == 0) {
@@ -207,9 +222,9 @@ public class data extends AppCompatActivity {
                                         }
                                     }}
                                 }
-                                if (flag1 == 1)
-                                    break;
                             }
+                            if (flag1 == 1)
+                            break;
                         }
 
 
@@ -257,10 +272,11 @@ public class data extends AppCompatActivity {
                                     }
                                 }}
                             }
+                        }
                             if (flag2 == 1)
                                 break;
                         }
-                        }
+
                         int dem = 0;
                         int error_number=0;
                         if(flag1==1 && flag2==1){
@@ -301,6 +317,8 @@ public class data extends AppCompatActivity {
         });
 
     }
+
+
 
 
 

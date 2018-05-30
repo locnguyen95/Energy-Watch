@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Takemoto Denki Coporation"
+        android:text="Takemoto Viet Nam"
         android:textColor="@android:color/holo_purple"
         android:textSize="18dp" />
 
@@ -28,7 +28,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="This software is developed by Loc Nguyen and Huy Stupid on 29/03/2018."
+        android:text="This software has been developed by Loc Nguyen and Huy Nguyen since march 2018."
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18dp" />
     <TextView
@@ -38,7 +38,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="This is an software developed for engineers and supervisors can be able to take an eye on there system's power parameters."
+        android:text="This is an software developed for engineers and supervisors can be able to take an eye on there system's power meters."
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18dp" />
     <TextView
@@ -49,7 +49,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:text="Again lots of thanks for Takemoto Denki staff - Mr.Tam for helping us to do this project."
+        android:text="Again lots of thanks for Takemoto's staff - Mr.Tam for helping us to do this project."
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18dp" />
 
